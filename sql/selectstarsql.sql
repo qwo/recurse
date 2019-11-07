@@ -95,8 +95,6 @@ FROM
 ORDER BY
     day_difference DESC
 LIMIT 10
-
-
 --- Senators
 WITH mutuals AS (
     SELECT DISTINCT
