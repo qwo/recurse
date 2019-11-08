@@ -15,11 +15,11 @@
 
 
     INSERT INTO guesses values ('Y', 'Y', 'B', 'B');
-    -- INSERT INTO guesses values ('V', 'R', 'R', 'Y');
-    -- INSERT INTO guesses values ('G', 'V', 'G', 'Y');
-    -- INSERT INTO guesses values ('R', 'R', 'V', 'Y');
-    -- INSERT INTO guesses values ('B', 'R', 'G', 'V');
-    -- INSERT INTO guesses values ('G', 'B', 'R', 'V');
+    INSERT INTO guesses values ('V', 'R', 'R', 'Y');
+    INSERT INTO guesses values ('G', 'V', 'G', 'Y');
+    INSERT INTO guesses values ('R', 'R', 'V', 'Y');
+    INSERT INTO guesses values ('B', 'R', 'G', 'V');
+    INSERT INTO guesses values ('G', 'B', 'R', 'V');
 
 
     --- Matches Black
@@ -60,15 +60,6 @@
                     $1.fourth = $2.third
                     )::int else 0 end
         ) from guesses
-    $$ LANGUAGE SQL;
-
-
-
-    CREATE OR REPLACE FUNCTION test_function(guesses,  mastermind) RETURNS guesses AS $$
-    --     SELECT count(*) from GUESSES join mastermind on guesses.*
-        SELECT * FROM guesses
-        intersect
-        SELECT * FROM mastermind
     $$ LANGUAGE SQL;
 
 
