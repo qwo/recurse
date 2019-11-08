@@ -1,7 +1,7 @@
 -- Create Table
--- Enforce if guess correctly
 -- Distinct combination
-DROP TYPE IF EXISTS color cascade ; CREATE TYPE color AS ENUM ('R', 'G', 'V', 'B', 'O', 'Y');
+--- R :Red, B :Blue, G: Green, V: Violet, O: Orange, Y: Yellow
+DROP TYPE IF EXISTS color cascade;CREATE TYPE color AS ENUM ('R', 'B', 'G', 'V', 'O', 'Y');
 
 DROP TABLE IF EXISTS guesses cascade ; CREATE TABLE guesses (
     first color,
@@ -9,19 +9,18 @@ DROP TABLE IF EXISTS guesses cascade ; CREATE TABLE guesses (
     third color ,
     fourth color
 );
+CREATE TABLE mastermind () inherits (guesses);
 INSERT INTO mastermind values ('R', 'G', 'R', 'G');
-INSERT INTO guesses values ('R', 'G', 'G', 'R'); 
+
+
+INSERT INTO guesses values ('R', 'G', 'G', 'R');
 INSERT INTO guesses values ('R', 'G', 'R', 'R');
 INSERT INTO guesses values ('R', 'G', 'R', 'G');
 INSERT INTO guesses values ('Y', 'G', 'R', 'G');
-CREATE TABLE mastermind () inherits (guesses);
 
 
 
-
--- INSERT INTO guesses values ('R', 'R', 'R', 'Y')
 --- Matches Black
-
 CREATE OR REPLACE FUNCTION check_black(guesses,  mastermind) RETURNS integer AS $$
     SELECT (
         ($1.first  = $2.first)::int +
@@ -33,7 +32,6 @@ $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION check_white(guesses,  mastermind) RETURNS integer AS $$
     SELECT (
-
         case when ($1.first != $2.first) then (
                 $1.first = $2.second or
                 $1.first = $2.third or
@@ -58,11 +56,7 @@ CREATE OR REPLACE FUNCTION check_white(guesses,  mastermind) RETURNS integer AS 
     );
 $$ LANGUAGE SQL;
 
-SELECT guesses,  check_black(guesses.*, mastermind.*), check_white(guesses.*, mastermind.*)
+SELECT guesses,
+       check_black(guesses.*, mastermind.*),
+       check_white(guesses.*, mastermind.*)
     FROM guesses, mastermind
-
-/*SELECT count(coalesce(
-            guesses.* = mastermind.*, false
-        )) as black
-from guesses left join mastermind on guesses.* = mastermind.**/
-
